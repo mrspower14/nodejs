@@ -12,6 +12,7 @@ async function bootstrap() {
       .setTitle("쇼핑몰 API (Relation 추가)")
       .setDescription("13장 판매자 1:N, 분류 M:N")
       .setVersion("1.0")
+      .addBearerAuth()  //보호 라우트용 테스트 코튼 입력
       .build();
 
   SwaggerModule.setup("docs", app, SwaggerModule.createDocument(app, config));

@@ -27,6 +27,7 @@ export class CreateProductDto {
     @ApiProperty({example: 1, description: "User ID"})
     @IsInt()
     sellerId: number;
+    
 
     @ApiProperty({type: [Number], example: [1,2], description: "분류 id 배열"})
     @IsArray()

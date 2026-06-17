@@ -118,7 +118,7 @@ create register.dto.ts
     1) register.dto.ts 컬럼 추가
     2) login.dto.ts 컬럼 추가 
 
-##8.파일 생성
+##8.파일 생성 (로그인)
 src/auth/constants.ts 
 1) constants.ts 내용 추가 
 2) auth.module.ts 내용 추가 
@@ -128,9 +128,18 @@ src/auth/constants.ts
 
 
 
-
+##9.암호화 토큰 생성, 제품등록시 적용 
 1)src/auth/strategies 폴더 생성
 2)jwt.strategy.ts 파일 생성, 내용 추가 
+3)auth.module.ts 에 providers : JwtStrategy 추가 
+4)jwt-auth.guard.ts 파일 수정
+5)products.controller 에 추가가
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+6)main.ts에 추가 .addBearerAuth() 
 
-
-
+##10. 제품 생성시 로그인된 userID 넣기 
+1)procuts/dto/create-product.dto.ts sellerId 주석처리 
+2)src/common 폴더 생성
+3)src/common/current-user.decorator.us  파일 생성 , 내용 추가 
+4)products.controller.ts  수정  @CurrentUser() user: AuthUser 추가 
