@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//jwt인증 추가
+enum Role {
+  BUYER //구매자 (기본)
+  SELLER //판매자
+  ADMIN //관리자
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String    @default("pw1234") //bcrypt 암호화 예정 //jwt인증 추가
+  name      String
+  role      Role      @default(BUYER) //jwt인증 추가
+  products  Product[] //1:N
+  createdAt DateTime  @default(now())
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[] //M:N
+}
+
+model Product {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  stock       Int        @default(0)
+  seller      User       @relation(fields: [sellerId], references: [id]) //FK 설정
+  sellerId    Int //FK
+  categories  Category[] //M:N
+  createdAt   DateTime   @default(now())
+}

@@ -1,0 +1,23 @@
+sudo npm i -g @nestjs/cli
+
+sudo nest new my-app
+
+npm yarm npmp > npm
+
+cd my-app
+npm run start
+
+http://localhost:3000 -> Hello World!
+
+
+
+
+--서버실행 (dev)
+npm run start:dev
+
+----posts 게시판 만들기 
+nest g resource posts 
+>REST API
+>Yes
+
+npm i @nestjs/mapped-types class-validator class-transformer

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "dev": "nodemon 03-board-api.js"  
+    // npm run dev 웹서버 실행 후 파일변경시 서버가 자동으로 재실행
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1"
+  }
+}

@@ -1,0 +1,64 @@
+## 1.프로젝트 생성
+nest new shop --skip-git
+
+cd shop 
+
+## 2.모듈 생성 --REST API > Yes 
+nest g resource categories --no-spec
+nest g resource products --no-spec
+nest g resource users --no-spec
+
+## 3.패키지 설치
+npm i class-validator class-transformer dotenv
+npm i @prisma/client@6
+npm i -D prisma@6
+npm i @nestjs/swagger 
+
+## prisma generate
+npx prisma init
+
+## schema.prisma 수정 
+  1)generator client {
+    provider = "prisma-client-js"
+  }
+  2)model 생성 
+
+## schema.prisma 파일을 정렬 깨끗하게.
+npx prisma format 
+
+    // DB  cli로 진행할 경우 명령어 start  (psql install 필요)
+    psql -U postgres postgres;
+    create database shop;
+    grant all PRIVILEGES on database shop to postgres;
+    \c shop
+    \l  #데이타베이스조회
+    \d  #테이블보기 
+    \d 테이블명 #테이블 상세보기 
+    grant all on schema public to postgres;
+    // cli로 진행할 경우 명령어 end 
+
+##.env 수정 
+1)DATABASE_URL="postgresql://<사용자계정>:<비밀번호>@localhost:5432/shop?schema=public"
+2)PORT=3000
+
+##터미널 bash
+npx prisma migrate dev --name init
+npx prisma generate 
+
+## prisma Service  //prisma nestjs 연결
+nest g module prisma
+nest g service prisma --no-spec
+   1)prisma.module.ts -> @Global(), exports: [PrismaService] 추가 
+   2)prisma.service.ts -> extends , implements 추가 
+
+## main.ts 수정
+   1) app.useGlobalPipes(new ValidationPipe( {whitelist: true, transform: true})); 추가
+   2) 스웨거 설정
+
+## dto, service, controller 수정 
+  1)tsconfig.json 추가  "strictPropertyInitialization": false
+  2)create-user.dto.ts 컬럼 추가   ///client -> server 로 보내는 포멧 
+  3)users.service.ts 수정 
+      constructor (private readonly prisma: PrismaService) {} 추가
+      create, findall, ... 내용 수정 
+  4)users.controller.ts @ApiTags("users")ㅡ @ApiOperation({summary: "쇼핑몰 사용자 목록"}) 추가
