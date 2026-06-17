@@ -8,14 +8,14 @@ export class ProductsService {
 
   constructor (private readonly prisma: PrismaService){}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, sellerId: number) {
     return this.prisma.product.create({
       data: {
         name: createProductDto.name,
         description: createProductDto.description,
         price: createProductDto.price,
         stock: createProductDto.stock,
-        sellerId: createProductDto.sellerId,
+        sellerId: sellerId, //req.user.id
         //M:N -> [1,2,3]
         //connet -> 새 프로덕트가 들어오면 product insert 하고,
         //기존 카테고리에 연결해줘(connect) 라는 의미
@@ -48,7 +48,7 @@ export class ProductsService {
     })
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(id: number, updateProductDto: UpdateProductDto, sellerId: number) {
     return this.prisma.product.update({
       where: {id},
       data: {
@@ -56,7 +56,7 @@ export class ProductsService {
         description: updateProductDto.description,
         price: updateProductDto.price,
         stock: updateProductDto.stock,
-        sellerId: updateProductDto.sellerId,
+        sellerId: sellerId,
         //set: 상품 분류 연결을 전달해준 목록으로 전부 다시 정해라 
         //     기존 연결된 목록에 없는것은 중간테이블에서 삭제
         //     목록에 있는것 -> 이미 연결되어 있으면 유지, 없으면 insert 

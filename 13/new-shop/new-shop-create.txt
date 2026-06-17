@@ -141,5 +141,16 @@ src/auth/constants.ts
 ##10. 제품 생성시 로그인된 userID 넣기 
 1)procuts/dto/create-product.dto.ts sellerId 주석처리 
 2)src/common 폴더 생성
-3)src/common/current-user.decorator.us  파일 생성 , 내용 추가 
-4)products.controller.ts  수정  @CurrentUser() user: AuthUser 추가 
+3)src/common/current-user.decorator.us  파일 생성 , 내용 추가 AuthUser, CurrentUser
+4)products.controller.ts  수정  @CurrentUser() user: AuthUser 파람 추가 
+5)products.service.ts 수정 create에 sellerID 파팜 추가 
+
+
+##11.Order, OrderItem, CartItem 쇼핑몰 넣기 
+1)schema.prisma 에 추가 
+   CartItem, Order, OrderItem 테이블 생성 
+2)npx prisma format 
+  npx prisma migrate dev --name add-order
+  npx prisma generate
+3)nest g resource orders --no-spec
+  nest g resource carts --no-spec 
