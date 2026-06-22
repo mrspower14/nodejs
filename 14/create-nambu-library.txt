@@ -1,0 +1,182 @@
+## 1.프로젝트 생성
+nest new nambu-library --skip-git
+
+cd nambu-library 
+
+## 2.모듈 생성 --REST API > Yes 
+nest g resource members --no-spec
+nest g resource book_info --no-spec
+nest g resource book_rental --no-spec
+nest g resource book_reservation --no-spec
+
+
+## 3.패키지 설치
+npm i class-validator class-transformer dotenv
+npm i @prisma/client@6
+npm i -D prisma@6
+npm i @nestjs/swagger 
+
+## prisma generate
+npx prisma init
+
+## schema.prisma 수정 
+  1)generator client {
+    provider = "prisma-client-js"
+  }
+  2)model 생성 
+
+## schema.prisma 파일을 정렬 깨끗하게.
+npx prisma format 
+
+    // DB  cli로 진행할 경우 명령어 start  (psql install 필요)
+    psql -U postgres postgres;
+    create database new-shop;
+    grant all PRIVILEGES on database new-shop to postgres;
+    \c new-shop
+    \l  #데이타베이스조회
+    \d  #테이블보기 
+    \d 테이블명 #테이블 상세보기 
+    grant all on schema public to postgres;
+    // cli로 진행할 경우 명령어 end 
+
+##.env 수정 
+1)DATABASE_URL="postgresql://<사용자계정>:<비밀번호>@localhost:5432/new-shop?schema=public"
+2)PORT=3000
+
+##터미널 bash
+npx prisma migrate dev --name init
+npx prisma generate 
+
+## prisma Service  //prisma nestjs 연결
+nest g module prisma
+nest g service prisma --no-spec
+   1)prisma.module.ts -> @Global(), exports: [PrismaService] 추가 
+   2)prisma.service.ts -> extends PrismaClient, implements OnModuleInit, OnModuleDestroy 추가 
+
+## main.ts 수정
+   1) app.useGlobalPipes(new ValidationPipe( {whitelist: true, transform: true})); 추가
+   2) 스웨거 설정
+
+## dto, service, controller 수정 
+  1)tsconfig.json 추가  "strictPropertyInitialization": false
+    참고) service.ts 에서 테이블 안보일때: cmd + shift + p => typescript ts 서버 다시 시작 
+
+  2)create-user.dto.ts 컬럼 추가   ///client -> server 로 보내는 포멧 
+  3)users.service.ts 수정 
+      constructor (private readonly prisma: PrismaService) {} 추가
+      create, findall, ... 내용 수정 
+  4)users.controller.ts @ApiTags("users")ㅡ @ApiOperation({summary: "쇼핑몰 사용자 목록"}) 추가
+
+## 서버실행
+npm run start:dev 
+  #swagger => http://localhost:3000/docs 
+npx prisma studio  
+  #prismaStudio => http://localhost:5555/
+
+
+##### JWT 인증 추가 
+#####Auth Dependency 추가 
+##1.패키지 설치
+npm i @nestjs/jwt@11 @nestjs/passport@11 passport@0.7 passport-jwt@4 bcrypt@6
+npm i -D @types/passport-jwt@4 @types/bcrypt@6
+
+##2. .env JWT 시크릿 추가
+JWT_SECRET="dev-secret-change-me"
+
+##3. 관련 모듈 생성
+nest g module auth 
+nest g service auth --no-spec 
+nest g controller auth --no-spec 
+nest g guard auth/guards/jwt-auth --no-spec 
+
+##4.schema.prisma 수정 후 재생성 
+    //jwt인증 추가
+    enum Role {
+        BUYER //구매자 (기본)
+        SELLER //판매자
+        ADMIN //관리자
+    }
+npx prisma format 
+npx prisma migrate dev --name add-auth
+npx prisma generate 
+
+##5.seed생성파일 생성 
+ 1) /prisma/seed.ts 
+ 2) package.json 추가 
+    "scripts": "seed": "ts-node prisma/seed.ts"
+npm run seed 
+npx prisma studio 실행하여 확인 
+
+##6. UserService 수정
+1)UserService 에 createUser, findByEmail 추가
+2)UserModule UserService export 추가 
+
+##7.Auth 모듈
+cd src/auth
+mkdir dto 
+cd dto
+create login.dto.ts
+create register.dto.ts
+
+    1) register.dto.ts 컬럼 추가
+    2) login.dto.ts 컬럼 추가 
+
+##8.파일 생성 (로그인)
+src/auth/constants.ts 
+1) constants.ts 내용 추가 
+2) auth.module.ts 내용 추가 
+   imports: [UsersModule, PassportModule, JwtModule]
+3) auth.service.ts 내용 추가 register, login 메소드 추가 
+4) auth.controller.ts 내용 추가  
+
+
+
+##9.암호화 토큰 생성, 제품등록시 적용 
+1)src/auth/strategies 폴더 생성
+2)jwt.strategy.ts 파일 생성, 내용 추가 
+3)auth.module.ts 에 providers : JwtStrategy 추가 
+4)jwt-auth.guard.ts 파일 수정
+5)products.controller 에 추가가
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+6)main.ts에 추가 .addBearerAuth() 
+
+##10. 제품 생성시 로그인된 userID 넣기 
+1)procuts/dto/create-product.dto.ts sellerId 주석처리 
+2)src/common 폴더 생성
+3)src/common/current-user.decorator.ts  파일 생성 , 내용 추가 AuthUser, CurrentUser
+4)products.controller.ts  수정  @CurrentUser() user: AuthUser 파람 추가 
+5)products.service.ts 수정 create에 sellerID 파팜 추가 
+
+
+##11.transaction 관리: Order, OrderItem, CartItem 쇼핑몰 넣기 
+1)schema.prisma 에 추가 
+   CartItem, Order, OrderItem 테이블 생성 
+2)npx prisma format 
+  npx prisma migrate dev --name add-order
+  npx prisma generate
+3)nest g resource orders --no-spec
+  nest g resource carts --no-spec 
+orderService, orderController 수정 
+
+
+##12.파일 저장 
+1)npm i @nestjs/serve-static@5
+  npm i -D @types/multer 
+2)schema.prisma 수정 productimage 테이블 추가 
+3)npx prisma migrate dev --name add-product-image
+  npx prisma generate
+4)productController, service update 추가
+5)app.module.ts 에 추가 
+5)main.ts 에 추가 
+
+
+POST /products/1/images Content-Type: multipart/form-data; boundary=----... ------... Content-Disposition: form-data; name="image"; filename="photo.png" Content-Type: image/png (바이너리 데이터) ------...
+
+POST /products/1/images -F image = sky.png
+
+JwtAuthGurd : 인증이 되어 있는지 체크
+FileInterceptor (product.controller)
+image 필드 + imageUploadOptions multer 2-1) 멀터 내부에서 multipart 파싱 -> fileFiler(_req, file, callbakc) 실행 -> 유효한 파일(사이즈도 5메가 이내ㅡ 파일명도 정확하면 -> diskStorage upload/.png
+addImage (product.controller.ts) 3-1) @UploadedFile file > multipart 파일 객체
+product service addImage 4-1) 제품정보 확인후에 ProductImage 저장

@@ -47,17 +47,25 @@ model Category {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String
-  price       Int
-  stock       Int         @default(0)
-  seller      User        @relation(fields: [sellerId], references: [id]) //FK 설정
-  sellerId    Int //FK
-  categories  Category[] //M:N
-  createdAt   DateTime    @default(now())
-  cartItems   CartItem[]
-  orderItems  OrderItem[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String
+  price         Int
+  stock         Int            @default(0)
+  seller        User           @relation(fields: [sellerId], references: [id]) //FK 설정
+  sellerId      Int //FK
+  categories    Category[] //M:N
+  createdAt     DateTime       @default(now())
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  productImages ProductImage[]
+}
+
+model ProductImage {
+  id         Int     @id @default(autoincrement())
+  storedName String
+  productId  Int
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model CartItem {
@@ -65,7 +73,7 @@ model CartItem {
   userId    Int
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId Int
-  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
 
   @@unique([userId, productId])
@@ -86,7 +94,7 @@ model OrderItem {
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId Int
-  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   unitPrice Int
 }

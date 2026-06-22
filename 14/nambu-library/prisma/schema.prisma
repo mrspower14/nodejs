@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MemberStatus {
+  NORMAL //정상
+  WITHDRAWAL //탈퇴 
+}
+
+enum BookStatus {
+  NORMAL //정상
+  DISPOSED //폐기
+}
+
+model Member {
+  id              Int               @id @default(autoincrement())
+  email           String            @unique
+  nickName        String
+  password        String
+  telNo           String
+  memStatus       MemberStatus      @default(NORMAL)
+  rentAvailYn     Boolean           @default(true)  //true: 대출가능
+  rentAvailDt     String            @default("")
+  bookRental      BookRental[] //1:N
+  bookReservation BookReservation[] //1:N
+  createdAt       DateTime          @default(now())
+}
+
+model BookInfo {
+  id              Int               @id @default(autoincrement())
+  bookIsbn        String            @unique
+  bookNm          String
+  publisher       String
+  author          String
+  image           String
+  bookStatus      BookStatus        @default(NORMAL)
+  rentYn          Boolean           @default(false) //true: 대출됨
+  bookRental      BookRental[] //1:N
+  bookReservation BookReservation[] //1:N
+  createdAt       DateTime          @default(now())
+}
+
+model BookRental {
+  id        Int      @id @default(autoincrement())
+  memId     Int
+  member    Member   @relation(fields: [memId], references: [id])
+  bookId    Int
+  bookInfo  BookInfo @relation(fields: [bookId], references: [id])
+  rentDt    String
+  dueDt     String
+  returnDt  String   @default("")
+  extCnt    Int      @default(0)
+  returnYn  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([memId, bookId, rentDt])
+}
+
+model BookReservation {
+  id        Int      @id @default(autoincrement())
+  memId     Int
+  member    Member   @relation(fields: [memId], references: [id])
+  bookId    Int
+  bookInfo  BookInfo @relation(fields: [bookId], references: [id])
+  reservDt  String   @default("")
+  createdAt DateTime @default(now())
+
+  @@unique([memId, bookId, reservDt])
+}

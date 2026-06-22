@@ -154,3 +154,26 @@ src/auth/constants.ts
   npx prisma generate
 3)nest g resource orders --no-spec
   nest g resource carts --no-spec 
+orderService, orderController 수정 
+
+
+##12.파일 저장 
+1)npm i @nestjs/serve-static@5
+  npm i -D @types/multer 
+2)schema.prisma 수정 productimage 테이블 추가 
+3)npx prisma migrate dev --name add-product-image
+  npx prisma generate
+4)productController, service update 추가
+5)app.module.ts 에 추가 
+5)main.ts 에 추가 
+
+
+POST /products/1/images Content-Type: multipart/form-data; boundary=----... ------... Content-Disposition: form-data; name="image"; filename="photo.png" Content-Type: image/png (바이너리 데이터) ------...
+
+POST /products/1/images -F image = sky.png
+
+JwtAuthGurd : 인증이 되어 있는지 체크
+FileInterceptor (product.controller)
+image 필드 + imageUploadOptions multer 2-1) 멀터 내부에서 multipart 파싱 -> fileFiler(_req, file, callbakc) 실행 -> 유효한 파일(사이즈도 5메가 이내ㅡ 파일명도 정확하면 -> diskStorage upload/.png
+addImage (product.controller.ts) 3-1) @UploadedFile file > multipart 파일 객체
+product service addImage 4-1) 제품정보 확인후에 ProductImage 저장

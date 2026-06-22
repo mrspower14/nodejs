@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthUser } from 'src/common/current-user.decorator';
+import { UPLOAD_DIR } from 'src/common/upload.config';
 
 @Injectable()
 export class ProductsService {
@@ -70,6 +72,21 @@ export class ProductsService {
 
   async remove(id: number) {
     return `This action removes a #${id} product`;
+  }
+
+  async addImage(productId: number, use: AuthUser, file: Express.Multer.File) {
+    const product = await this.prisma.product.findUnique({
+      where: {id : productId},
+      select: {id: true, sellerId: true}
+    });
+
+    //npx prisma migrage dev --name add-product-image
+    //npx prisma generate
+    const image = await this.prisma.productImage.create({
+      data: {productId, storedName: file.filename}
+    });
+
+    return {id: image.id, url: `${UPLOAD_DIR}/${image.storedName}`};
   }
 
 }
