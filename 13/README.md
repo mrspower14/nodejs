@@ -153,9 +153,7 @@ npm i -D @types/multer
 
 #.env 업데이트 
 # 보안네트워킹/액세스키>연결문자열 복사해서 사용 
-AZURE_STORAGE_CONNETION_STRING="DefaultEndpointsProtocol=https;AccountName=storageblobshk;AccountKey=6gzyT8vM0RI84QDe1/qiKlvehdZdjhsGVF9pRsE+DHKf5EtBf+GDau03XS5IiabxwpBZfz5N5clH+ASt6EJ+PQ==;EndpointSuffix=core.windows.net"
-AZURE_PUBLIC_CONTAINER="product-images"
-
+ 
 #main.ts 수정 .env 읽어오는 부분 
 
 #azure module 만들기
