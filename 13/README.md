@@ -133,7 +133,7 @@ POST /products/1/images
     -> fileFiler(_req, file, callbakc) 실행 
     -> 유효한 파일(사이즈도 5메가 이내ㅡ 파일명도 정확하면
     -> diskStorage upload/<uuid>.png
-3) addImage (product.controller.ts)
+3) addImage (product.controller.ts) 
     3-1) @UploadedFile file > multipart 파일 객체 
 4) product service addImage 
      4-1) 제품정보 확인후에 ProductImage 저장 
