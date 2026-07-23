@@ -137,3 +137,33 @@ POST /products/1/images
     3-1) @UploadedFile file > multipart 파일 객체 
 4) product service addImage 
      4-1) 제품정보 확인후에 ProductImage 저장 
+
+
+#####azure blob-storage 저장 
+
+#스토리지센터 - blob storage 만들기 - azure.portal 에서 만들기 
+ 스토리지 
+  - 익명엑세스 - 설정 - 구성 - 익명액세스 허용 으로 수정.  
+  - 데이터 스토리지 > 컨테이너  > 컨테이너추가 > 이름, blob에 대한 익명액세스 허용 > 만들기 
+
+
+# npm install 
+npm i @azure/storage-blob
+npm i -D @types/multer
+
+#.env 업데이트 
+# 보안네트워킹/액세스키>연결문자열 복사해서 사용 
+AZURE_STORAGE_CONNETION_STRING="DefaultEndpointsProtocol=https;AccountName=storageblobshk;AccountKey=6gzyT8vM0RI84QDe1/qiKlvehdZdjhsGVF9pRsE+DHKf5EtBf+GDau03XS5IiabxwpBZfz5N5clH+ASt6EJ+PQ==;EndpointSuffix=core.windows.net"
+AZURE_PUBLIC_CONTAINER="product-images"
+
+#main.ts 수정 .env 읽어오는 부분 
+
+#azure module 만들기
+nest g module azure --no-spec
+nest g service azure/azure-blob --no-spec 
+
+#azure-blob.service.ts 수정 
+#upload.config.ts 수정 :  storage: memoryStorage(), 
+#products.service.ts 수정: 
+#app.module.ts 수정: ServeStaticModule.forRoot( 주석처리 
+#azure.module.ts에 exports 추가 exports: [AzureBlobService]

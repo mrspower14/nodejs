@@ -1,0 +1,221 @@
+{
+  '/': {
+    get: {
+      operationId: 'AppController_getHello',
+      parameters: [],
+      responses: [Object],
+      tags: [Array]
+    }
+  },
+  '/members': {
+    get: {
+      operationId: 'MembersController_findOne',
+      parameters: [],
+      responses: [Object],
+      security: [Array],
+      summary: '회원 정보 조회',
+      tags: [Array]
+    },
+    patch: {
+      operationId: 'MembersController_update',
+      parameters: [],
+      requestBody: [Object],
+      responses: [Object],
+      security: [Array],
+      summary: '회원 정보 수정',
+      tags: [Array]
+    },
+    delete: {
+      operationId: 'MembersController_remove',
+      parameters: [],
+      responses: [Object],
+      security: [Array],
+      summary: '회원 탈퇴',
+      tags: [Array]
+    }
+  },
+  '/members/test': {
+    get: {
+      operationId: 'MembersController_findOneTest',
+      parameters: [],
+      responses: [Object],
+      summary: '회원 정보 조회',
+      tags: [Array]
+    }
+  },
+  '/members/ChangeRentAvailYn': {
+    patch: {
+      operationId: 'MembersController_changeRentAvailYn',
+      parameters: [],
+      responses: [Object],
+      summary: '연체회원 일괄 변경(대출가능여부)',
+      tags: [Array]
+    }
+  },
+  '/bookInfo': {
+    post: {
+      operationId: 'BookInfoController_create',
+      parameters: [],
+      requestBody: [Object],
+      responses: [Object],
+      summary: '도서 등록',
+      tags: [Array]
+    }
+  },
+  '/bookInfo/search': {
+    get: {
+      operationId: 'BookInfoController_findSearchName',
+      parameters: [Array],
+      responses: [Object],
+      summary: '도서 목록 검색 조회',
+      tags: [Array]
+    }
+  },
+  '/bookInfo/{id}': {
+    get: {
+      operationId: 'BookInfoController_findOne',
+      parameters: [Array],
+      responses: [Object],
+      summary: '도서 정보 상세 조회',
+      tags: [Array]
+    },
+    patch: {
+      operationId: 'BookInfoController_update',
+      parameters: [Array],
+      requestBody: [Object],
+      responses: [Object],
+      summary: '도서 정보 수정',
+      tags: [Array]
+    },
+    delete: {
+      operationId: 'BookInfoController_remove',
+      parameters: [Array],
+      responses: [Object],
+      summary: '도서 폐기',
+      tags: [Array]
+    }
+  },
+  '/bookInfo/{id}/images': {
+    post: {
+      operationId: 'BookInfoController_addImage',
+      parameters: [Array],
+      requestBody: [Object],
+      responses: [Object],
+      summary: '도서 이미지 업로드',
+      tags: [Array]
+    }
+  },
+  '/bookRental': {
+    post: {
+      operationId: 'BookRentalController_create',
+      parameters: [],
+      requestBody: [Object],
+      responses: [Object],
+      security: [Array],
+      summary: '도서 대출',
+      tags: [Array]
+    },
+    get: {
+      operationId: 'BookRentalController_findAll',
+      parameters: [],
+      responses: [Object],
+      security: [Array],
+      summary: '도서 대출 목록',
+      tags: [Array]
+    }
+  },
+  '/bookRental/{id}': {
+    get: {
+      operationId: 'BookRentalController_findOne',
+      parameters: [Array],
+      responses: [Object],
+      security: [Array],
+      summary: '대출 도서 정보',
+      tags: [Array]
+    },
+    patch: {
+      operationId: 'BookRentalController_update',
+      parameters: [Array],
+      requestBody: [Object],
+      responses: [Object],
+      security: [Array],
+      summary: '대출 연장',
+      tags: [Array]
+    },
+    delete: {
+      operationId: 'BookRentalController_remove',
+      parameters: [Array],
+      responses: [Object],
+      security: [Array],
+      summary: '대출 반납',
+      tags: [Array]
+    }
+  },
+  '/bookReservation': {
+    post: {
+      operationId: 'BookReservationController_create',
+      parameters: [],
+      requestBody: [Object],
+      responses: [Object],
+      security: [Array],
+      summary: '도서 예약',
+      tags: [Array]
+    },
+    get: {
+      operationId: 'BookReservationController_findAll',
+      parameters: [],
+      responses: [Object],
+      security: [Array],
+      summary: '예약도서 조회 ',
+      tags: [Array]
+    }
+  },
+  '/bookReservation/{id}': {
+    get: {
+      operationId: 'BookReservationController_findOne',
+      parameters: [Array],
+      responses: [Object],
+      security: [Array],
+      summary: '예약도서 상세 조회 ',
+      tags: [Array]
+    },
+    delete: {
+      operationId: 'BookReservationController_remove',
+      parameters: [Array],
+      responses: [Object],
+      security: [Array],
+      summary: '도서 예약 취소',
+      tags: [Array]
+    }
+  },
+  '/bookReservation/moveToRent/{id}': {
+    post: {
+      operationId: 'BookReservationController_moveToRent',
+      parameters: [Array],
+      responses: [Object],
+      security: [Array],
+      summary: '예약도서 대출',
+      tags: [Array]
+    }
+  },
+  '/auth/register': {
+    post: {
+      operationId: 'AuthController_register',
+      parameters: [],
+      requestBody: [Object],
+      responses: [Object],
+      summary: '회원가입',
+      tags: [Array]
+    }
+  },
+  '/auth/login': {
+    post: {
+      operationId: 'AuthController_login',
+      parameters: [],
+      requestBody: [Object],
+      responses: [Object],
+      summary: '로그인',
+      tags: [Array]
+    }
+  }
+}

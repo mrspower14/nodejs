@@ -1,6 +1,6 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { jwtConstants } from "../constants";
+import { jwtConstants } from "../constants"; 
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
     
@@ -11,7 +11,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             //만료된 토큰은 거부(AuthModule signOption.expiresIn 설정)
             ignoreExpiration: false,
             //로그인 시에 sign()에 쓴 secret 과 동일해야 검증 성공
-            secretOrKey: jwtConstants.secret
+            //secretOrKey: jwtConstants.secret,
+            secretOrKey: process.env.JWT_SECRET ?? ""
         });
     }
 
@@ -19,5 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //반환값은 req.user 된다. req.user 뽑아쓰면 아래 return 그대로 볼 수 있다.
     validate(payload: any) {
         return {id: payload.sub, email: payload.email, role: payload.role  }
+        //id: payload.id, email: payload.email, userName: payload.userName, role: payload.role, projectId: payload.projectId 
     }
 }

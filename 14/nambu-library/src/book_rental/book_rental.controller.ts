@@ -37,7 +37,6 @@ export class BookRentalController {
   }
 
   @Patch(':id')
-  @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({summary: "대출 연장"})

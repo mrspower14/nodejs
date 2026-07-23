@@ -2,12 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { mkdirSync } from 'fs';
-import { UPLOAD_DIR } from './common/upload.config';
+// import { mkdirSync } from 'fs';
+// import { UPLOAD_DIR } from './common/upload.config';
+import {config as loadEnv} from 'dotenv'; //azure
+
+loadEnv();  //AZURE_STORAGE_CONNECTION string 등을 .env 에서 가져오기 위해서 사용 //azure
 
 async function bootstrap() {
 
-  mkdirSync(UPLOAD_DIR, {recursive: true}); //디렉토리 밑에 uploads 
+  //mkdirSync(UPLOAD_DIR, {recursive: true}); //디렉토리 밑에 uploads 
 
   const app = await NestFactory.create(AppModule);
   // whitelist는 dto에 없는 필드 자동 제거 만약 dto에 isAdmin이 없는데 클라이언트에서 isAdmin 보내면 자동 무시

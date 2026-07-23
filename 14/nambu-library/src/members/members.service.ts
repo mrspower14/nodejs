@@ -48,6 +48,14 @@ export class MembersService {
     return exists;
   }
 
+  async findOneTest() {
+    return this.prisma.member.findMany({
+      select: {
+        id: true, email: true
+      }
+    });
+  }
+
   async update(id: number, updateMemberDto: UpdateMemberDto) {
     await this.findOne(id);
     const exists = await this.prisma.member.findUnique({ 

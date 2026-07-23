@@ -35,6 +35,16 @@ export class ProductsController {
       properties: {image: {type: "string", format: "binary"}}
     }
   })
+  // @UseInterceptors(FileInterceptor("image", imageUploadOptions))
+  // addImage(
+  //   @Param("id", ParseIntPipe) id: number,
+  //   @UploadedFile() file: Express.Multer.File,
+  //   @CurrentUser() user: AuthUser
+  // ){ 
+  //   if (!file) throw new UnsupportedMediaTypeException(`업로드 이미지가 없어요`);
+  //   return this.productsService.addImage(id, user, file);
+  // }
+
   @UseInterceptors(FileInterceptor("image", imageUploadOptions))
   addImage(
     @Param("id", ParseIntPipe) id: number,
@@ -42,9 +52,8 @@ export class ProductsController {
     @CurrentUser() user: AuthUser
   ){ 
     if (!file) throw new UnsupportedMediaTypeException(`업로드 이미지가 없어요`);
-    return this.productsService.addImage(id, user, file);
+    return this.productsService.addImageAzure(id, user, file);
   }
-
 
   @Get()
   findAll() {

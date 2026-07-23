@@ -1,0 +1,774 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/members": {
+      "get": {
+        "operationId": "MembersController_findOne",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "회원 정보 조회",
+        "tags": [
+          "members"
+        ]
+      },
+      "patch": {
+        "operationId": "MembersController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "회원 정보 수정",
+        "tags": [
+          "members"
+        ]
+      },
+      "delete": {
+        "operationId": "MembersController_remove",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "회원 탈퇴",
+        "tags": [
+          "members"
+        ]
+      }
+    },
+    "/members/test": {
+      "get": {
+        "operationId": "MembersController_findOneTest",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "회원 정보 조회",
+        "tags": [
+          "members"
+        ]
+      }
+    },
+    "/members/ChangeRentAvailYn": {
+      "patch": {
+        "operationId": "MembersController_changeRentAvailYn",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "연체회원 일괄 변경(대출가능여부)",
+        "tags": [
+          "members"
+        ]
+      }
+    },
+    "/bookInfo": {
+      "post": {
+        "operationId": "BookInfoController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBookInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "도서 등록",
+        "tags": [
+          "bookInfo"
+        ]
+      }
+    },
+    "/bookInfo/search": {
+      "get": {
+        "operationId": "BookInfoController_findSearchName",
+        "parameters": [
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "description": "책제목",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "도서 목록 검색 조회",
+        "tags": [
+          "bookInfo"
+        ]
+      }
+    },
+    "/bookInfo/{id}": {
+      "get": {
+        "operationId": "BookInfoController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "도서 정보 상세 조회",
+        "tags": [
+          "bookInfo"
+        ]
+      },
+      "patch": {
+        "operationId": "BookInfoController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "도서 정보 수정",
+        "tags": [
+          "bookInfo"
+        ]
+      },
+      "delete": {
+        "operationId": "BookInfoController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "도서 폐기",
+        "tags": [
+          "bookInfo"
+        ]
+      }
+    },
+    "/bookInfo/{id}/images": {
+      "post": {
+        "operationId": "BookInfoController_addImage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "도서 이미지 업로드",
+        "tags": [
+          "bookInfo"
+        ]
+      }
+    },
+    "/bookRental": {
+      "post": {
+        "operationId": "BookRentalController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBookRentalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "도서 대출",
+        "tags": [
+          "bookRental"
+        ]
+      },
+      "get": {
+        "operationId": "BookRentalController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "도서 대출 목록",
+        "tags": [
+          "bookRental"
+        ]
+      }
+    },
+    "/bookRental/{id}": {
+      "get": {
+        "operationId": "BookRentalController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "대출 도서 정보",
+        "tags": [
+          "bookRental"
+        ]
+      },
+      "patch": {
+        "operationId": "BookRentalController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookRentalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "대출 연장",
+        "tags": [
+          "bookRental"
+        ]
+      },
+      "delete": {
+        "operationId": "BookRentalController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "대출 반납",
+        "tags": [
+          "bookRental"
+        ]
+      }
+    },
+    "/bookReservation": {
+      "post": {
+        "operationId": "BookReservationController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBookReservationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "도서 예약",
+        "tags": [
+          "bookReservation"
+        ]
+      },
+      "get": {
+        "operationId": "BookReservationController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "예약도서 조회 ",
+        "tags": [
+          "bookReservation"
+        ]
+      }
+    },
+    "/bookReservation/{id}": {
+      "get": {
+        "operationId": "BookReservationController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "예약도서 상세 조회 ",
+        "tags": [
+          "bookReservation"
+        ]
+      },
+      "delete": {
+        "operationId": "BookReservationController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "도서 예약 취소",
+        "tags": [
+          "bookReservation"
+        ]
+      }
+    },
+    "/bookReservation/moveToRent/{id}": {
+      "post": {
+        "operationId": "BookReservationController_moveToRent",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "예약도서 대출",
+        "tags": [
+          "bookReservation"
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "회원가입",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "로그인",
+        "tags": [
+          "auth"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "NAMBU-LIBRARY",
+    "description": "남부 도서관",
+    "version": "1.0",
+    "contact": {
+
+    }
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "UpdateMemberDto": {
+        "type": "object",
+        "properties": {
+
+        }
+      },
+      "CreateBookInfoDto": {
+        "type": "object",
+        "properties": {
+          "bookIsbn": {
+            "type": "string",
+            "example": "9788960779990"
+          },
+          "bookNm": {
+            "type": "string",
+            "example": "노드JS와 몽고DB로 웹 개발 시작하기"
+          },
+          "publisher": {
+            "type": "string",
+            "example": "에이콘출판"
+          },
+          "author": {
+            "type": "string",
+            "example": "미툰 사티시"
+          },
+          "image": {
+            "type": "string",
+            "example": ""
+          },
+          "bookStatus": {
+            "type": "string",
+            "example": "NORMAL"
+          },
+          "rentYn": {
+            "type": "boolean",
+            "example": "false"
+          }
+        },
+        "required": [
+          "bookIsbn",
+          "bookNm",
+          "publisher",
+          "author",
+          "image",
+          "bookStatus",
+          "rentYn"
+        ]
+      },
+      "UpdateBookInfoDto": {
+        "type": "object",
+        "properties": {
+
+        }
+      },
+      "CreateBookRentalDto": {
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "bookId"
+        ]
+      },
+      "UpdateBookRentalDto": {
+        "type": "object",
+        "properties": {
+
+        }
+      },
+      "CreateBookReservationDto": {
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "bookId"
+        ]
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "book1@demo.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret123"
+          },
+          "nickName": {
+            "type": "string",
+            "example": "책벌레"
+          },
+          "telNo": {
+            "type": "string",
+            "example": "01033331234"
+          },
+          "memStatus": {
+            "type": "string",
+            "example": "NORMAL"
+          },
+          "rentAvailYn": {
+            "type": "boolean",
+            "example": true
+          },
+          "rentAvailDt": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "nickName",
+          "telNo",
+          "memStatus",
+          "rentAvailYn",
+          "rentAvailDt"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "book@nambu.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret123"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      }
+    }
+  }
+}

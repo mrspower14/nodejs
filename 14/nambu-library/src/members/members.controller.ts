@@ -29,7 +29,16 @@ export class MembersController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "회원 정보 조회"})
   findOne(@CurrentUser() member: AuthMember) {
-    return this.membersService.findOne(member.id);
+    return this.membersService.findOne(1);
+  }
+
+  // @Get(':id')
+  @Get('test')
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "회원 정보 조회"})
+  findOneTest() {
+    return this.membersService.findOneTest();
   }
 
   //@Patch(':id')

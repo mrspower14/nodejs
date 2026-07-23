@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -15,7 +15,7 @@ async function main() {
             email: "admin@demo.com",
             password,
             name: "관리자",
-            role: "ADMIN"
+            role: Role.ADMIN//"ADMIN"
         }
     });
     console.log(`seed 완료: ${admin.email}`);

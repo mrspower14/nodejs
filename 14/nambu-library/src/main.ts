@@ -4,6 +4,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { mkdirSync } from 'fs';
 import { UPLOAD_DIR } from './common/upload.config';
+import OpenAPIParser from '@readme/openapi-parser';
+import { dereference } from '@scalar/openapi-parser';
 
 async function bootstrap() {
 
@@ -28,5 +30,8 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
   console.log(`new-shop -- http://localhost:${process.env.PORT} 기동 ... `);
+
+
 }
+
 bootstrap();

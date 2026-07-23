@@ -11,14 +11,16 @@ import { CartsModule } from './carts/carts.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UPLOAD_DIR } from './common/upload.config';
 import { join } from 'path';
+import { AzureModule } from './azure/azure.module';
 
 @Module({
   imports: [CategoriesModule, ProductsModule, UsersModule, PrismaModule, AuthModule, OrdersModule, CartsModule,
-    //업로드한 이미지를 그대로 내어주는 모듈 uploads/ -> /uploads 
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), UPLOAD_DIR), // .../shop/uploads 
-      serveRoot: "/uploads"
-    }),
+    // //업로드한 이미지를 그대로 내어주는 모듈 uploads/ -> /uploads 
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(process.cwd(), UPLOAD_DIR), // .../shop/uploads 
+    //   serveRoot: "/uploads"
+    // }),
+    AzureModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { BookStatus } from "@prisma/client";
 import { IsBoolean, IsIn, IsOptional, IsString, MinLength } from "class-validator";
 
 export class CreateBookInfoDto {

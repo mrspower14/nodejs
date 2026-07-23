@@ -1,0 +1,114 @@
+enum ROLE {
+    OWNER,
+    MEMBER
+}
+
+model User (
+	id	        Int	        @id default(autoincrement())
+	email	    String	@unique NOT NULL 
+	userName	String	NOT NULL
+	password	String	NOT NULL
+    membership Membership[]
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
+model Project (
+	id	Int	        @id default(autoincrement())
+	linkUrl	    String	NOT NULL
+	linkJsonUrl	String	NULL
+	projectTitle	String	NOT NULL
+	description	String	NULL
+	version	String	NULL
+	isCompleted	Boolean	NOT NULL
+    projectJson ProjectJson[]
+    endpoint Endpoint[] 
+    membership Membership[]
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
+model ProjectJson (
+	id	Int	@id default(autoincrement())
+	projectId	Int	NOT NULL
+    project Project @relation(fields: [projectId], references: [id]) 
+	projectJson	Json	NOT NULL	 
+	createdAt	DateTime	NOT NULL
+);
+
+model Membership (
+	id	Int	@id default(autoincrement())
+	projectId	Int	NOT NULL
+    project Project @relation(fields: [projectId], references: [id]) 
+	userId	Int	NOT NULL
+    user User @relation(fields: [userId], references: [id]) 
+	role	ROLE @default(MEMBER)
+	memState	String	NOT NULL
+	createdAt	DateTime	NOT NULL	default(now())
+	updatedAt	DateTime	NOT NULL	default(now())
+);
+
+model Endpoint (
+	id	Int	@id default(autoincrement())
+	projectId	Int	NOT NULL
+    project Project @relation(fields: [projectId], references: [id]) 
+	endpointName	String	NOT NULL
+	endpointCase	String	NOT NULL
+	operationId	String	NULL
+	summary	String	NULL
+	tagName	String	NOT NULL
+	endpointJson	Json	NOT NULL
+	isDeleted	Boolean	NOT NULL	DEFAULT false
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
+model Comment (
+	id	Int	@id default(autoincrement())
+	endPointId	Int	NOT NULL
+	userId	Int	 
+	context	String	NULL
+	isDeleted	Boolean	NOT NULL	DEFAULT false
+	parentId	Int	NULL
+	projectId	Int	
+	createdAt	DateTime	NOT NULL	default(now())
+	updatedAt	DateTime	NULL	default(now())
+);
+
+model MemberMention (
+	id	Int @id default(autoincrement())
+	commentId	Int	NOT NULL
+	userId	Int	NOT NULL
+	projectId	Int	NOT NULL
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
+
+
+
+
+model Notification (
+	id	Int	@id default(autoincrement())
+	userId	Int	 
+	invitedId	Int	NOT NULL
+	mentionId	Int	NULL
+	commentId	Int	NULL
+	isRead	Boolean	NOT NULL	DEFAULT false
+	projectId	Int	
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
+model Reaction (
+	id	Int	@id default(autoincrement())
+	commentId	Int	NOT NULL
+	userId	Int	NOT NULL
+	reactState	String	NOT NULL
+	projectId	Int	NOT NULL
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
+model EndPointMention (
+	id	Int	@id default(autoincrement())
+	commentId	Int	NOT NULL
+	endPointId	Int	NOT NULL
+	projectId	Int	NOT NULL
+	createdAt	DateTime	NOT NULL	default(now())
+);
+
