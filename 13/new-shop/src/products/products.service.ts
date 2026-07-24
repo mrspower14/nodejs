@@ -13,8 +13,6 @@ export class ProductsService {
                private readonly azureBlob: AzureBlobService
   ){}
 
-  AzureBlobService
-
   async create(createProductDto: CreateProductDto, sellerId: number) {
     return this.prisma.product.create({
       data: {
